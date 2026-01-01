@@ -1,0 +1,88 @@
+{
+  "properties": [
+    {
+      "id": "prop1",
+      "type": "House",
+      "bedrooms": 3,
+      "price": 750000,
+      "tenure": "Freehold",
+      "description": "Attractive three bedroom semi-detached family home situated within 0.5 miles of Petts Wood station with fast trains to London and within easy walking distance of local shops, schools, bus routes and National Trust woodland.",
+      "location": "Petts Wood Road, Petts Wood, Orpington BR5",
+      "picture": "house1.jpg",
+      "url": "properties/prop1.html",
+      "added": { "month": "October", "day": 12, "year": 2022 }
+    },
+    {
+      "id": "prop2",
+      "type": "Flat",
+      "bedrooms": 2,
+      "price": 399995,
+      "tenure": "Leasehold",
+      "description": "Presented in excellent decorative order throughout is this two double bedroom, two bathroom, garden flat. The modern fitted kitchen is open plan to the living room which boasts solid wooden floors.",
+      "location": "Crofton Road, Orpington BR6",
+      "picture": "flat1.jpg",
+      "url": "properties/prop2.html",
+      "added": { "month": "September", "day": 14, "year": 2022 }
+    },
+    {
+      "id": "prop3",
+      "type": "House",
+      "bedrooms": 4,
+      "price": 550000,
+      "tenure": "Freehold",
+      "description": "A spacious four bedroom detached house featuring a large garden and garage. Ideal for growing families, located near excellent local schools.",
+      "location": "Station Road, Bromley BR1",
+      "picture": "house2.jpg",
+      "url": "properties/prop3.html",
+      "added": { "month": "January", "day": 10, "year": 1999 }
+    },
+    {
+      "id": "prop4",
+      "type": "Flat",
+      "bedrooms": 1,
+      "price": 250000,
+      "tenure": "Leasehold",
+      "description": "Modern one bedroom apartment perfect for professionals. Close to city center amenities and public transport links.",
+      "location": "High Street, Penge SE20",
+      "picture": "flat2.jpg",
+      "url": "properties/prop4.html",
+      "added": { "month": "March", "day": 5, "year": 2023 }
+    },
+    {
+      "id": "prop5",
+      "type": "House",
+      "bedrooms": 5,
+      "price": 950000,
+      "tenure": "Freehold",
+      "description": "Luxury five bedroom villa with swimming pool and private driveway. This property offers exclusive living in a quiet residential area.",
+      "location": "Manor Park, Chislehurst BR7",
+      "picture": "house3.jpg",
+      "url": "properties/prop5.html",
+      "added": { "month": "July", "day": 22, "year": 2015 }
+    },
+    {
+      "id": "prop6",
+      "type": "Flat",
+      "bedrooms": 3,
+      "price": 450000,
+      "tenure": "Share of Freehold",
+      "description": "Stunning three bedroom penthouse with panoramic views. Features a roof terrace and open plan living space.",
+      "location": "London Road, Forest Hill SE23",
+      "picture": "flat3.jpg",
+      "url": "properties/prop6.html",
+      "added": { "month": "November", "day": 1, "year": 1995 }
+    },
+    {
+      "id": "prop7",
+      "type": "House",
+      "bedrooms": 2,
+      "price": 325000,
+      "tenure": "Freehold",
+      "description": "Cozy two bedroom cottage with original features and fireplace. Located in a charming village setting.",
+      "location": "Church Lane, Chelsfield BR6",
+      "picture": "house4.jpg",
+      "url": "properties/prop7.html",
+      "added": { "month": "December", "day": 15, "year": 2025 }
+    }
+  ]
+}
