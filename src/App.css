@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+/* TOAST NOTIFICATION - Floating in top right corner */
+.toast-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #28a745; /* Green background */
+  color: white;
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-weight: bold;
+  z-index: 9999; /* Ensure it sits on top of everything */
+  animation: slideIn 0.5s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Slide in animation */
+@keyframes slideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

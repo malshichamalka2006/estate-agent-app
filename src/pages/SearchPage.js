@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import PropertyCard from '../components/PropertyCard';
-import data from '../data/properties.json'; // Importing your JSON data
+import data from '../data/properties.json';
 
-function SearchPage() {
-  // 1. STATE: Holds all properties and the user's search inputs
+function SearchPage({ favourites, addFavourite, removeFavourite, clearFavourites }) {
   const [properties, setProperties] = useState([]);
   const [filters, setFilters] = useState({
     type: 'any',
@@ -16,97 +16,109 @@ function SearchPage() {
     postcode: ''
   });
 
-  // 2. LOAD DATA: When the page loads, set the properties from JSON
   useEffect(() => {
     setProperties(data.properties);
   }, []);
 
-  // 3. HANDLE CHANGE: Updates state when user types in the form
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value }));
   };
 
-  // 4. SEARCH LOGIC: The "Brain" of the app
   const filteredProperties = properties.filter(property => {
-    // Check Type (House/Flat/Any)
     const typeMatch = filters.type === 'any' || property.type === filters.type;
-    
-    // Check Price
     const priceMatch = property.price >= Number(filters.minPrice) && property.price <= Number(filters.maxPrice);
-    
-    // Check Bedrooms
     const bedMatch = property.bedrooms >= Number(filters.minBedrooms) && property.bedrooms <= Number(filters.maxBedrooms);
-    
-    // Check Postcode (Search for "BR1", "NW1" etc)
     const postcodeMatch = filters.postcode === '' || property.location.toLowerCase().includes(filters.postcode.toLowerCase());
-
-    // Check Date (Complex logic to parse Month/Day/Year)
-    let dateMatch = true;
-    if (filters.dateFrom || filters.dateTo) {
-      // Create a JavaScript Date object from the property data
-      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      const monthIndex = monthNames.indexOf(property.added.month);
-      const propertyDate = new Date(property.added.year, monthIndex, property.added.day);
-      
-      if (filters.dateFrom && new Date(filters.dateFrom) > propertyDate) dateMatch = false;
-      if (filters.dateTo && new Date(filters.dateTo) < propertyDate) dateMatch = false;
-    }
-
-    // RETURN: If all match, keep the property
-    return typeMatch && priceMatch && bedMatch && postcodeMatch && dateMatch;
+    return typeMatch && priceMatch && bedMatch && postcodeMatch;
   });
 
-  // 5. RENDER: The Search Form and the Results List
+  const onDragEnd = (result) => {
+    if (!result.destination) return;
+    if (result.destination.droppableId === 'favourites-zone') {
+        const itemID = result.draggableId;
+        const itemToAdd = properties.find(p => p.id === itemID);
+        if (itemToAdd) addFavourite(itemToAdd);
+    }
+  };
+
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Find Your Dream Home</h1>
-      
-      {/* SEARCH FORM */}
-      <div className="search-form" style={{ background: '#f4f4f4', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-          
-          {/* Type Filter */}
-          <label>
-            Type:
-            <select name="type" onChange={handleFilterChange}>
-              <option value="any">Any</option>
-              <option value="House">House</option>
-              <option value="Flat">Flat</option>
-            </select>
-          </label>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className="search-page-container">
+        
+        {/* LEFT SIDE: SEARCH & RESULTS */}
+        <div style={{ flex: 3 }}>
+            <h1>Find Your Dream Home</h1>
+            <div className="search-form" style={{ background: '#f4f4f4', padding: '15px', marginBottom: '20px', borderRadius: '8px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <label>Type: <select name="type" onChange={handleFilterChange}><option value="any">Any</option><option value="House">House</option><option value="Flat">Flat</option></select></label>
+                    <label>Postcode: <input type="text" name="postcode" placeholder="e.g. BR1" onChange={handleFilterChange}/></label>
+                    <label>Min Price: <input type="number" name="minPrice" value={filters.minPrice} onChange={handleFilterChange}/></label>
+                    <label>Max Price: <input type="number" name="maxPrice" value={filters.maxPrice} onChange={handleFilterChange}/></label>
+                </div>
+            </div>
 
-          {/* Postcode Filter */}
-          <label>
-            Postcode Area (e.g. BR1):
-            <input type="text" name="postcode" placeholder="Postcode..." onChange={handleFilterChange} />
-          </label>
-
-          {/* Price Filters */}
-          <label>Min Price: <input type="number" name="minPrice" value={filters.minPrice} onChange={handleFilterChange} /></label>
-          <label>Max Price: <input type="number" name="maxPrice" value={filters.maxPrice} onChange={handleFilterChange} /></label>
-
-          {/* Bedroom Filters */}
-          <label>Min Beds: <input type="number" name="minBedrooms" value={filters.minBedrooms} onChange={handleFilterChange} /></label>
-          <label>Max Beds: <input type="number" name="maxBedrooms" value={filters.maxBedrooms} onChange={handleFilterChange} /></label>
-
-          {/* Date Filters */}
-          <label>Added After: <input type="date" name="dateFrom" onChange={handleFilterChange} /></label>
-          <label>Added Before: <input type="date" name="dateTo" onChange={handleFilterChange} /></label>
+            <Droppable droppableId="property-list" isDropDisabled={true}>
+                {(provided) => (
+                    <div 
+                        className="results-list" 
+                        {...provided.droppableProps} 
+                        ref={provided.innerRef}
+                        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '15px' }}
+                    >
+                        {filteredProperties.map((property, index) => (
+                            <Draggable key={property.id} draggableId={property.id} index={index}>
+                                {(provided) => (
+                                    <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                    >
+                                        <PropertyCard property={property} />
+                                    </div>
+                                )}
+                            </Draggable>
+                        ))}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
         </div>
-      </div>
 
-      {/* RESULTS LIST */}
-      <div className="results-list" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-        {filteredProperties.length > 0 ? (
-          filteredProperties.map(property => (
-            <PropertyCard key={property.id} property={property} />
-          ))
-        ) : (
-          <p>No properties match your search.</p>
-        )}
+        {/* RIGHT SIDE: FAVOURITES SECTION */}
+        <div className="favourites-sidebar" style={{ flex: 1, border: '2px dashed green', padding: '10px', background: '#eeffee', minHeight: '500px', marginLeft: '20px' }}>
+            <h2 style={{color: 'green'}}>Favourites Zone</h2>
+            
+            <button onClick={clearFavourites} style={{width: '100%', padding: '5px', background: 'red', color: 'white', border: 'none', cursor: 'pointer', marginBottom: '10px'}}>
+                Clear Favourites
+            </button>
+
+            <Droppable droppableId="favourites-zone">
+                {(provided, snapshot) => (
+                    <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        style={{ 
+                            minHeight: '300px', 
+                            backgroundColor: snapshot.isDraggingOver ? '#c3ffc3' : 'transparent'
+                        }}
+                    >
+                        {favourites.length === 0 && <p style={{textAlign: 'center', color: '#666'}}>Drag houses here!</p>}
+                        
+                        {favourites.map((fav, index) => (
+                             <div key={fav.id} style={{ border: '1px solid #ccc', padding: '10px', background: 'white', marginBottom: '5px' }}>
+                                <b>{fav.type}</b> <br/> {fav.location}
+                                <button onClick={() => removeFavourite(fav.id)} style={{fontSize: '0.8rem', color: 'red', marginTop: '5px'}}>Remove</button>
+                             </div>
+                        ))}
+                        {provided.placeholder}
+                    </div>
+                )}
+            </Droppable>
+        </div>
+
       </div>
-    </div>
+    </DragDropContext>
   );
 }
 

@@ -6,12 +6,12 @@ import data from '../data/properties.json';
 
 import { FaHeart, FaArrowLeft } from 'react-icons/fa'; // Icons
 
-function PropertyPage() {
+// STEP 7 UPDATE: We now accept '{ addFavourite }' as a prop
+function PropertyPage({ addFavourite }) {
   const { id } = useParams(); // Get the ID from the URL (e.g., "prop1")
   const property = data.properties.find(p => p.id === id); // Find the house
 
   // State for the Image Gallery (Default to the main picture)
-  // Note: We use the image from JSON, or a placeholder if missing.
   const [mainImage, setMainImage] = useState(property ? property.picture : null);
 
   // Safety Check: If someone types a wrong URL
@@ -42,9 +42,12 @@ function PropertyPage() {
             <h3>{property.type} - £{property.price.toLocaleString()}</h3>
         </div>
         
-        {/* Favourites Button (Visual only for now - logic comes in next step) */}
-        <button style={{ background: 'transparent', border: '1px solid red', color: 'red', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer' }}>
-            <FaHeart /> Save
+        {/* STEP 7 UPDATE: The button now calls the addFavourite function */}
+        <button 
+            onClick={() => addFavourite(property)}
+            style={{ background: 'transparent', border: '1px solid red', color: 'red', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
+        >
+            <FaHeart /> Save to Favourites
         </button>
       </div>
 
@@ -52,7 +55,6 @@ function PropertyPage() {
       <div className="gallery-container" style={{ margin: '20px 0' }}>
         {/* Large Main Image */}
         <div style={{ width: '100%', height: '400px', backgroundColor: '#ddd', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-            {/* If we had real images, <img src={...} /> would go here. For now, we show text. */}
             <h2>Displaying: {mainImage}</h2>
         </div>
         
