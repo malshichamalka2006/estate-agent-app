@@ -45,78 +45,82 @@ function SearchPage({ favourites, addFavourite, removeFavourite, clearFavourites
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="search-page-container">
+        <h1>Find Your Dream Home</h1>
         
-        {/* LEFT SIDE: SEARCH & RESULTS */}
-        <div style={{ flex: 3 }}>
-            <h1>Find Your Dream Home</h1>
-            <div className="search-form" style={{ background: '#f4f4f4', padding: '15px', marginBottom: '20px', borderRadius: '8px' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                    <label>Type: <select name="type" onChange={handleFilterChange}><option value="any">Any</option><option value="House">House</option><option value="Flat">Flat</option></select></label>
-                    <label>Postcode: <input type="text" name="postcode" placeholder="e.g. BR1" onChange={handleFilterChange}/></label>
-                    <label>Min Price: <input type="number" name="minPrice" value={filters.minPrice} onChange={handleFilterChange}/></label>
-                    <label>Max Price: <input type="number" name="maxPrice" value={filters.maxPrice} onChange={handleFilterChange}/></label>
-                </div>
+        {/* Search Form */}
+        <div className="search-form">
+            <div className="search-form-grid">
+                <label>Type <select name="type" onChange={handleFilterChange}><option value="any">Any</option><option value="House">House</option><option value="Flat">Flat</option></select></label>
+                <label>Postcode <input type="text" name="postcode" placeholder="e.g. BR1" onChange={handleFilterChange}/></label>
+                <label>Min Price <input type="number" name="minPrice" value={filters.minPrice} onChange={handleFilterChange}/></label>
+                <label>Max Price <input type="number" name="maxPrice" value={filters.maxPrice} onChange={handleFilterChange}/></label>
+                <label>Min Beds <input type="number" name="minBedrooms" value={filters.minBedrooms} onChange={handleFilterChange}/></label>
+                <label>Max Beds <input type="number" name="maxBedrooms" value={filters.maxBedrooms} onChange={handleFilterChange}/></label>
             </div>
-
-            <Droppable droppableId="property-list" isDropDisabled={true}>
-                {(provided) => (
-                    <div 
-                        className="results-list" 
-                        {...provided.droppableProps} 
-                        ref={provided.innerRef}
-                        style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '15px' }}
-                    >
-                        {filteredProperties.map((property, index) => (
-                            <Draggable key={property.id} draggableId={property.id} index={index}>
-                                {(provided) => (
-                                    <div
-                                        ref={provided.innerRef}
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                    >
-                                        <PropertyCard property={property} />
-                                    </div>
-                                )}
-                            </Draggable>
-                        ))}
-                        {provided.placeholder}
-                    </div>
-                )}
-            </Droppable>
         </div>
 
-        {/* RIGHT SIDE: FAVOURITES SECTION */}
-        <div className="favourites-sidebar" style={{ flex: 1, border: '2px dashed green', padding: '10px', background: '#eeffee', minHeight: '500px', marginLeft: '20px' }}>
-            <h2 style={{color: 'green'}}>Favourites Zone</h2>
-            
-            <button onClick={clearFavourites} style={{width: '100%', padding: '5px', background: 'red', color: 'white', border: 'none', cursor: 'pointer', marginBottom: '10px'}}>
-                Clear Favourites
-            </button>
+        {/* Results Grid */}
+        <Droppable droppableId="property-list" isDropDisabled={true}>
+            {(provided) => (
+                <div 
+                    className="results-list" 
+                    {...provided.droppableProps} 
+                    ref={provided.innerRef}
+                >
+                    {filteredProperties.length === 0 && <p>No properties match your search...</p>}
+                    {filteredProperties.map((property, index) => (
+                        <Draggable key={property.id} draggableId={property.id} index={index}>
+                            {(provided) => (
+                                <div
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    style={{ ...provided.draggableProps.style }}
+                                >
+                                    <PropertyCard property={property} />
+                                </div>
+                            )}
+                        </Draggable>
+                    ))}
+                    {provided.placeholder}
+                </div>
+            )}
+        </Droppable>
 
+        {/* Floating Favourites Widget */}
+        <div className="favourites-widget">
+            <h3 style={{marginTop: 0, fontSize: '1.1rem', color: '#28a745'}}>Favourites Zone</h3>
             <Droppable droppableId="favourites-zone">
                 {(provided, snapshot) => (
                     <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                         style={{ 
-                            minHeight: '300px', 
-                            backgroundColor: snapshot.isDraggingOver ? '#c3ffc3' : 'transparent'
+                            minHeight: '100px', 
+                            backgroundColor: snapshot.isDraggingOver ? '#e6fffa' : 'transparent',
+                            transition: 'background-color 0.2s',
+                            border: '1px dashed #ccc',
+                            borderRadius: '4px',
+                            padding: '5px'
                         }}
                     >
-                        {favourites.length === 0 && <p style={{textAlign: 'center', color: '#666'}}>Drag houses here!</p>}
-                        
+                        {favourites.length === 0 && <p style={{fontSize: '0.8rem', color: '#888', textAlign: 'center'}}>Drag here!</p>}
                         {favourites.map((fav, index) => (
-                             <div key={fav.id} style={{ border: '1px solid #ccc', padding: '10px', background: 'white', marginBottom: '5px' }}>
-                                <b>{fav.type}</b> <br/> {fav.location}
-                                <button onClick={() => removeFavourite(fav.id)} style={{fontSize: '0.8rem', color: 'red', marginTop: '5px'}}>Remove</button>
+                             <div key={fav.id} className="fav-item">
+                                <div><strong>{fav.type}</strong><br/>£{fav.price.toLocaleString()}</div>
+                                <button className="remove-btn" onClick={() => removeFavourite(fav.id)}>×</button>
                              </div>
                         ))}
                         {provided.placeholder}
                     </div>
                 )}
             </Droppable>
+            {favourites.length > 0 && (
+                <button onClick={clearFavourites} style={{width: '100%', marginTop: '10px', padding: '5px', background: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer'}}>
+                    Clear Favourites
+                </button>
+            )}
         </div>
-
       </div>
     </DragDropContext>
   );

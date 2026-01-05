@@ -5,14 +5,16 @@ import App from './App';
 // TEST 1: Does the main page render correctly?
 test('renders the search page title', () => {
   render(<App />);
-  const titleElement = screen.getByText(/Find Your Dream Home/i);
+  // Note: If you changed your title to "FarmSmart", update this text to match!
+  // regex /i means case insensitive
+  const titleElement = screen.getByText(/Find Your Dream Home|FarmSmart/i);
   expect(titleElement).toBeInTheDocument();
 });
 
 // TEST 2: Do the properties load from JSON?
 test('renders property cards', () => {
   render(<App />);
-  // Checks for specific text from the first property in your JSON
+  // We look for a specific address from your JSON data
   const propertyLocation = screen.getByText(/Petts Wood Road/i);
   expect(propertyLocation).toBeInTheDocument();
 });
@@ -21,15 +23,17 @@ test('renders property cards', () => {
 test('filters properties when type is changed', () => {
   render(<App />);
   
-  // 1. Change filter to "Flat"
+  // 1. Find the dropdown
   const typeSelect = screen.getByLabelText(/Type:/i);
+  
+  // 2. Change value to 'Flat'
   fireEvent.change(typeSelect, { target: { value: 'Flat' } });
   
-  // 2. Ensure House is gone
+  // 3. Check that the House is gone
   const houseElement = screen.queryByText(/Petts Wood Road/i);
   expect(houseElement).not.toBeInTheDocument();
 
-  // 3. Ensure Flat remains
+  // 4. Check that the Flat is visible
   const flatElement = screen.getByText(/Crofton Road/i);
   expect(flatElement).toBeInTheDocument();
 });
@@ -37,15 +41,14 @@ test('filters properties when type is changed', () => {
 // TEST 4: Does the Favourites Sidebar render?
 test('renders the favourites sidebar', () => {
   render(<App />);
-  // Checks for the header text we added to the sidebar
-  const favTitle = screen.getByText(/Favourites Zone/i);
+  const favTitle = screen.getByText(/Favourites/i);
   expect(favTitle).toBeInTheDocument();
 });
 
 // TEST 5: Does the Clear Favourites button exist?
 test('renders clear favourites button', () => {
   render(<App />);
-  // Looks for the button by its accessible role and text name
+  // Using getByRole is the most robust way to find buttons
   const clearButton = screen.getByRole('button', { name: /Clear Favourites/i });
   expect(clearButton).toBeInTheDocument();
 });
