@@ -1,31 +1,24 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css'; // Standard CSS for tabs
+import 'react-tabs/style/react-tabs.css'; 
 import data from '../data/properties.json'; 
+import { FaHeart, FaArrowLeft } from 'react-icons/fa'; 
 
-import { FaHeart, FaArrowLeft } from 'react-icons/fa'; // Icons
-
-// STEP 7 UPDATE: We now accept '{ addFavourite }' as a prop
 function PropertyPage({ addFavourite }) {
-  const { id } = useParams(); // Get the ID from the URL (e.g., "prop1")
-  const property = data.properties.find(p => p.id === id); // Find the house
+  const { id } = useParams(); 
+  const property = data.properties.find(p => p.id === id); 
 
-  // State for the Image Gallery (Default to the main picture)
+  // Initialize mainImage with the property's main picture
   const [mainImage, setMainImage] = useState(property ? property.picture : null);
 
-  // Safety Check: If someone types a wrong URL
   if (!property) {
     return <h2>Property not found!</h2>;
   }
 
-  // Gallery Images (Simulated array - in a real app, these would be in the JSON)
-  const images = [
-    property.picture,
-    "kitchen.jpg",
-    "livingroom.jpg",
-    "bedroom.jpg"
-  ];
+  // UPDATED: Use the specific images from the JSON file
+  // If 'images' array exists in JSON, use it. Otherwise, fallback to just the main picture.
+  const images = property.images || [property.picture];
 
   return (
     <div className="property-page" style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
@@ -36,78 +29,93 @@ function PropertyPage({ addFavourite }) {
       </Link>
 
       {/* Title Section */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
         <div>
-            <h1>{property.location}</h1>
-            <h3>{property.type} - £{property.price.toLocaleString()}</h3>
+            <h1 style={{margin: '0 0 10px 0'}}>{property.location}</h1>
+            <h3 style={{margin: 0}}>{property.type} - £{property.price.toLocaleString()}</h3>
         </div>
         
-        {/* STEP 7 UPDATE: The button now calls the addFavourite function */}
         <button 
             onClick={() => addFavourite(property)}
-            style={{ background: 'transparent', border: '1px solid red', color: 'red', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
+            style={{ background: 'white', border: '1px solid #dc3545', color: '#dc3545', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
         >
             <FaHeart /> Save to Favourites
         </button>
       </div>
 
-      {/* GALLERY SECTION (5% Marks) */}
+      {/* === GALLERY SECTION === */}
       <div className="gallery-container" style={{ margin: '20px 0' }}>
+        
         {/* Large Main Image */}
-        <div style={{ width: '100%', height: '400px', backgroundColor: '#ddd', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
-            <h2>Displaying: {mainImage}</h2>
+        <div style={{ width: '100%', height: '500px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px', borderRadius: '8px', overflow: 'hidden' }}>
+            <img 
+                src={`/${mainImage}`} 
+                alt="Main View" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => { e.target.src = "https://via.placeholder.com/800x500?text=No+Image+Found"; }}
+            />
         </div>
         
         {/* Thumbnails */}
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
             {images.map((img, index) => (
                 <div 
                     key={index} 
                     onClick={() => setMainImage(img)}
                     style={{ 
-                        width: '100px', 
-                        height: '80px', 
-                        backgroundColor: '#eee', 
-                        border: mainImage === img ? '2px solid blue' : '1px solid #ccc',
+                        height: '100px', 
                         cursor: 'pointer',
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center'
+                        borderRadius: '4px',
+                        overflow: 'hidden',
+                        border: mainImage === img ? '3px solid #007bff' : '1px solid #ddd',
+                        opacity: mainImage === img ? 1 : 0.7
                     }}
                 >
-                    <small>{img}</small>
+                    <img 
+                        src={`/${img}`} 
+                        alt={`thumbnail-${index}`} 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        onError={(e) => { e.target.src = "https://via.placeholder.com/150?text=No+Img"; }}
+                    />
                 </div>
             ))}
         </div>
       </div>
 
-      {/* TABS SECTION (7% Marks) */}
-      <Tabs>
-        <TabList>
+      {/* === TABS SECTION === */}
+      <Tabs style={{ marginTop: '30px' }}>
+        <TabList style={{borderBottom: '1px solid #ccc', marginBottom: '20px'}}>
           <Tab>Description</Tab>
           <Tab>Floor Plan</Tab>
           <Tab>Map</Tab>
         </TabList>
 
         <TabPanel>
-          <div style={{ padding: '20px', background: '#fff', border: '1px solid #ccc' }}>
-            <h3>Full Description</h3>
+          <div style={{ padding: '20px', background: '#fff', border: '1px solid #eee', borderRadius: '8px', lineHeight: '1.6' }}>
+            <h3 style={{marginTop: 0}}>Property Details</h3>
             <p>{property.description}</p>
-            <p><strong>Tenure:</strong> {property.tenure}</p>
-            <p><strong>Bedrooms:</strong> {property.bedrooms}</p>
-            <p><strong>Added:</strong> {property.added.day} {property.added.month} {property.added.year}</p>
+            <hr style={{border: '0', borderTop: '1px solid #eee', margin: '20px 0'}}/>
+            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px'}}>
+                {/* Note: Ensure property.tenure exists in your JSON or this might be blank */}
+                <p><strong>Tenure:</strong> {property.tenure || 'Freehold'}</p>
+                <p><strong>Bedrooms:</strong> {property.bedrooms}</p>
+                <p><strong>Added:</strong> {property.added.day} {property.added.month} {property.added.year}</p>
+                <p><strong>Postcode:</strong> {property.postcode}</p>
+            </div>
           </div>
         </TabPanel>
 
         <TabPanel>
-          <div style={{ padding: '20px', background: '#fff', border: '1px solid #ccc', height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <h3>Floor Plan Image Goes Here</h3>
+          <div style={{ padding: '40px', background: '#f9f9f9', border: '1px solid #eee', borderRadius: '8px', textAlign: 'center', minHeight: '300px' }}>
+            <h3>Floor Plan</h3>
+            <p>Interactive floor plan would be displayed here.</p>
           </div>
         </TabPanel>
 
         <TabPanel>
-          <div style={{ padding: '20px', background: '#fff', border: '1px solid #ccc', height: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <h3>Google Map Goes Here</h3>
+          <div style={{ padding: '40px', background: '#eef', border: '1px solid #eee', borderRadius: '8px', textAlign: 'center', minHeight: '300px' }}>
+             <h3>Map View</h3>
+             <p>Google Maps integration would go here showing: <strong>{property.location}</strong></p>
           </div>
         </TabPanel>
       </Tabs>
