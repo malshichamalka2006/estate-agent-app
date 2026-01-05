@@ -15,11 +15,11 @@ function PropertyPage({ addFavourite }) {
     return <h2>Property not found!</h2>;
   }
 
-  // Use images from JSON or fallback to just the main picture
   const images = property.images || [property.picture];
 
   return (
     <div className="property-page" style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
+      
       <Link to="/" style={{ textDecoration: 'none', color: '#333', display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
         <FaArrowLeft style={{ marginRight: '5px' }}/> Back to Search
       </Link>
@@ -29,6 +29,7 @@ function PropertyPage({ addFavourite }) {
             <h1 style={{margin: '0 0 10px 0'}}>{property.location}</h1>
             <h3 style={{margin: 0}}>{property.type} - £{property.price.toLocaleString()}</h3>
         </div>
+        
         <button 
             onClick={() => addFavourite(property)}
             style={{ background: 'white', border: '1px solid #dc3545', color: '#dc3545', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
@@ -38,15 +39,18 @@ function PropertyPage({ addFavourite }) {
       </div>
 
       <div className="gallery-container" style={{ margin: '20px 0' }}>
+        
+        {/* Large Main Image FIX */}
         <div style={{ width: '100%', height: '500px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px', borderRadius: '8px', overflow: 'hidden' }}>
             <img 
-                src={`/${mainImage}`} 
+                src={`${process.env.PUBLIC_URL}/${mainImage}`} 
                 alt="Main View" 
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={(e) => { e.target.src = "https://via.placeholder.com/800x500?text=No+Image+Found"; }}
             />
         </div>
         
+        {/* Thumbnails FIX */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
             {images.map((img, index) => (
                 <div 
@@ -62,7 +66,7 @@ function PropertyPage({ addFavourite }) {
                     }}
                 >
                     <img 
-                        src={`/${img}`} 
+                        src={`${process.env.PUBLIC_URL}/${img}`} 
                         alt={`thumbnail-${index}`} 
                         style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         onError={(e) => { e.target.src = "https://via.placeholder.com/150?text=No+Img"; }}
@@ -86,7 +90,7 @@ function PropertyPage({ addFavourite }) {
             <hr style={{border: '0', borderTop: '1px solid #eee', margin: '20px 0'}}/>
             <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px'}}>
                 <p><strong>Bedrooms:</strong> {property.bedrooms}</p>
-                <p><strong>Postcode:</strong> {property.postcode || 'N/A'}</p>
+                <p><strong>Postcode:</strong> {property.postcode}</p>
             </div>
           </div>
         </TabPanel>

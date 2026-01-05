@@ -2,15 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function PropertyCard({ property }) {
-  // === CRITICAL SAFETY CHECK ===
-  // If property is missing, do not render.
   if (!property) return null;
 
   return (
     <div className="property-card">
       <div className="card-image-container">
         <img 
-          src={property.picture ? `/${property.picture}` : "https://via.placeholder.com/300x200?text=No+Image"} 
+          // FIX: We add process.env.PUBLIC_URL to handle the sub-folder on GitHub
+          src={property.picture ? `${process.env.PUBLIC_URL}/${property.picture}` : "https://via.placeholder.com/300x200"} 
           alt={property.type || "Property"}
           style={{ width: '100%', height: '200px', objectFit: 'cover', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
           onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/300x200?text=No+Image+Found"; }}

@@ -1,8 +1,8 @@
 {
-  "name": "real-estate-app",
+  "name": "estate-agent-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://malshichamalka2006.github.io/real-estate-app",
+  "homepage": "https://malshichamalka2006.github.io/estate-agent-app",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
