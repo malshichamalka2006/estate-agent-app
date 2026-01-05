@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/estate-agent-app/static/css/main.baec38ca.css",
+    "main.css": "/estate-agent-app/static/css/main.8dbe942f.css",
     "main.js": "/estate-agent-app/static/js/main.663364e6.js",
     "index.html": "/estate-agent-app/index.html",
-    "main.baec38ca.css.map": "/estate-agent-app/static/css/main.baec38ca.css.map",
+    "main.8dbe942f.css.map": "/estate-agent-app/static/css/main.8dbe942f.css.map",
     "main.663364e6.js.map": "/estate-agent-app/static/js/main.663364e6.js.map"
   },
   "entrypoints": [
-    "static/css/main.baec38ca.css",
+    "static/css/main.8dbe942f.css",
     "static/js/main.663364e6.js"
   ]
 }
