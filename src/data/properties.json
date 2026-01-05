@@ -8,7 +8,7 @@
       "location": "Petts Wood Road, Petts Wood, Orpington BR5",
       "picture": "properties/prop1/main.jpg",
       "images": ["properties/prop1/main.jpg", "properties/prop1/kitchen.jpg", "properties/prop1/living.jpg", "properties/prop1/bed.jpg"],
-      "description": "Attractive three bedroom semi-detached family home...",
+      "description": "Attractive three bedroom semi-detached family home situated within 0.5 miles of Petts Wood station.",
       "added": { "month": "October", "day": 12, "year": 2022 }
     },
     {
@@ -19,7 +19,7 @@
       "location": "Crofton Road Orpington BR6",
       "picture": "properties/prop2/main.jpg",
       "images": ["properties/prop2/main.jpg", "properties/prop2/kitchen.jpg", "properties/prop2/living.jpg", "properties/prop2/bed.jpg"],
-      "description": "Presented in excellent decorative order...",
+      "description": "Presented in excellent decorative order throughout is this two double bedroom, two bathroom, garden flat.",
       "added": { "month": "September", "day": 14, "year": 2022 }
     },
     {
@@ -30,7 +30,7 @@
       "location": "High Street, Bromley BR1",
       "picture": "properties/prop3/main.jpg",
       "images": ["properties/prop3/main.jpg", "properties/prop3/kitchen.jpg", "properties/prop3/living.jpg", "properties/prop3/bed.jpg"],
-      "description": "Stunning four bedroom detached house...",
+      "description": "Stunning four bedroom detached house offering spacious living accommodation.",
       "added": { "month": "January", "day": 20, "year": 2023 }
     },
     {
@@ -41,7 +41,7 @@
       "location": "Station Road, Sidcup DA15",
       "picture": "properties/prop4/main.jpg",
       "images": ["properties/prop4/main.jpg", "properties/prop4/kitchen.jpg", "properties/prop4/living.jpg", "properties/prop4/bed.jpg"],
-      "description": "A charming one-bedroom flat...",
+      "description": "A charming one-bedroom flat located near the city center.",
       "added": { "month": "March", "day": 5, "year": 2023 }
     },
     {
@@ -52,7 +52,7 @@
       "location": "Chislehurst Road, Chislehurst BR7",
       "picture": "properties/prop5/main.jpg",
       "images": ["properties/prop5/main.jpg", "properties/prop5/kitchen.jpg", "properties/prop5/living.jpg", "properties/prop5/bed.jpg"],
-      "description": "Luxury five-bedroom home...",
+      "description": "Luxury five-bedroom home with swimming pool and home cinema.",
       "added": { "month": "November", "day": 10, "year": 2023 }
     },
     {
@@ -63,7 +63,7 @@
       "location": "London Road, Bromley BR1",
       "picture": "properties/prop6/main.jpg",
       "images": ["properties/prop6/main.jpg", "properties/prop6/kitchen.jpg", "properties/prop6/living.jpg", "properties/prop6/bed.jpg"],
-      "description": "Spacious three-bedroom penthouse...",
+      "description": "Spacious three-bedroom penthouse apartment.",
       "added": { "month": "June", "day": 15, "year": 2023 }
     },
     {
@@ -74,7 +74,7 @@
       "location": "Main Road, Orpington BR6",
       "picture": "properties/prop7/main.jpg",
       "images": ["properties/prop7/main.jpg", "properties/prop7/kitchen.jpg", "properties/prop7/living.jpg", "properties/prop7/bed.jpg"],
-      "description": "Cozy two-bedroom cottage...",
+      "description": "Cozy two-bedroom cottage with period features.",
       "added": { "month": "December", "day": 1, "year": 2023 }
     }
   ]

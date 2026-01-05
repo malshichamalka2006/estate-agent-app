@@ -9,32 +9,26 @@ function PropertyPage({ addFavourite }) {
   const { id } = useParams(); 
   const property = data.properties.find(p => p.id === id); 
 
-  // Initialize mainImage with the property's main picture
   const [mainImage, setMainImage] = useState(property ? property.picture : null);
 
   if (!property) {
     return <h2>Property not found!</h2>;
   }
 
-  // UPDATED: Use the specific images from the JSON file
-  // If 'images' array exists in JSON, use it. Otherwise, fallback to just the main picture.
+  // Use images from JSON or fallback to just the main picture
   const images = property.images || [property.picture];
 
   return (
     <div className="property-page" style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
-      
-      {/* Back Button */}
       <Link to="/" style={{ textDecoration: 'none', color: '#333', display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
         <FaArrowLeft style={{ marginRight: '5px' }}/> Back to Search
       </Link>
 
-      {/* Title Section */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
         <div>
             <h1 style={{margin: '0 0 10px 0'}}>{property.location}</h1>
             <h3 style={{margin: 0}}>{property.type} - £{property.price.toLocaleString()}</h3>
         </div>
-        
         <button 
             onClick={() => addFavourite(property)}
             style={{ background: 'white', border: '1px solid #dc3545', color: '#dc3545', padding: '10px 20px', borderRadius: '5px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
@@ -43,10 +37,7 @@ function PropertyPage({ addFavourite }) {
         </button>
       </div>
 
-      {/* === GALLERY SECTION === */}
       <div className="gallery-container" style={{ margin: '20px 0' }}>
-        
-        {/* Large Main Image */}
         <div style={{ width: '100%', height: '500px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '10px', borderRadius: '8px', overflow: 'hidden' }}>
             <img 
                 src={`/${mainImage}`} 
@@ -56,7 +47,6 @@ function PropertyPage({ addFavourite }) {
             />
         </div>
         
-        {/* Thumbnails */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
             {images.map((img, index) => (
                 <div 
@@ -82,7 +72,6 @@ function PropertyPage({ addFavourite }) {
         </div>
       </div>
 
-      {/* === TABS SECTION === */}
       <Tabs style={{ marginTop: '30px' }}>
         <TabList style={{borderBottom: '1px solid #ccc', marginBottom: '20px'}}>
           <Tab>Description</Tab>
@@ -96,27 +85,18 @@ function PropertyPage({ addFavourite }) {
             <p>{property.description}</p>
             <hr style={{border: '0', borderTop: '1px solid #eee', margin: '20px 0'}}/>
             <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px'}}>
-                {/* Note: Ensure property.tenure exists in your JSON or this might be blank */}
-                <p><strong>Tenure:</strong> {property.tenure || 'Freehold'}</p>
                 <p><strong>Bedrooms:</strong> {property.bedrooms}</p>
-                <p><strong>Added:</strong> {property.added.day} {property.added.month} {property.added.year}</p>
-                <p><strong>Postcode:</strong> {property.postcode}</p>
+                <p><strong>Postcode:</strong> {property.postcode || 'N/A'}</p>
             </div>
           </div>
         </TabPanel>
-
         <TabPanel>
-          <div style={{ padding: '40px', background: '#f9f9f9', border: '1px solid #eee', borderRadius: '8px', textAlign: 'center', minHeight: '300px' }}>
             <h3>Floor Plan</h3>
-            <p>Interactive floor plan would be displayed here.</p>
-          </div>
+            <p>Interactive floor plan goes here.</p>
         </TabPanel>
-
         <TabPanel>
-          <div style={{ padding: '40px', background: '#eef', border: '1px solid #eee', borderRadius: '8px', textAlign: 'center', minHeight: '300px' }}>
              <h3>Map View</h3>
-             <p>Google Maps integration would go here showing: <strong>{property.location}</strong></p>
-          </div>
+             <p>Map goes here.</p>
         </TabPanel>
       </Tabs>
     </div>

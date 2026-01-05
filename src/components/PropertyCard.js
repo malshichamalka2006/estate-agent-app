@@ -1,26 +1,51 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// We accept a 'property' object as a prop
 function PropertyCard({ property }) {
+  // === CRITICAL SAFETY CHECK ===
+  // If property is missing, do not render.
+  if (!property) return null;
+
   return (
-    <div className="property-card" style={{ border: '1px solid #ddd', padding: '15px', margin: '10px', borderRadius: '8px' }}>
-      {/* Image Placeholder - we will fix real images later */}
-      <div style={{ backgroundColor: '#eee', height: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <span>{property.picture}</span>
+    <div className="property-card">
+      <div className="card-image-container">
+        <img 
+          src={property.picture ? `/${property.picture}` : "https://via.placeholder.com/300x200?text=No+Image"} 
+          alt={property.type || "Property"}
+          style={{ width: '100%', height: '200px', objectFit: 'cover', borderTopLeftRadius: '8px', borderTopRightRadius: '8px' }}
+          onError={(e) => { e.target.onerror = null; e.target.src = "https://via.placeholder.com/300x200?text=No+Image+Found"; }}
+        />
       </div>
 
-      <h3>{property.type} - {property.location}</h3>
-      <p className="price">£{property.price.toLocaleString()}</p>
-      <p>{property.bedrooms} Bedrooms</p>
-      <p>{property.description.substring(0, 60)}...</p>
-      
-      {/* Link to the details page */}
-      <Link to={`/property/${property.id}`}>
-        <button style={{ backgroundColor: '#007bff', color: 'white', padding: '10px', border: 'none', cursor: 'pointer' }}>
-          View Details
-        </button>
-      </Link>
+      <div style={{ padding: '15px' }}>
+        <h3 style={{ margin: '0 0 10px 0', fontSize: '1.2rem' }}>
+            {property.location || "Unknown Location"}
+        </h3>
+        <p style={{ margin: '5px 0' }}>
+            {property.type} - {property.bedrooms} Beds
+        </p>
+        <p style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#28a745', margin: '10px 0' }}>
+            £{property.price ? property.price.toLocaleString() : '0'}
+        </p>
+        
+        <div style={{ display: 'flex', gap: '10px', marginTop: '15px' }}>
+            <Link to={`/property/${property.id}`} style={{ flex: 1 }}>
+                <button 
+                    style={{
+                        width: '100%',
+                        padding: '10px',
+                        backgroundColor: '#007bff',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '5px',
+                        cursor: 'pointer'
+                    }}
+                >
+                    View Details
+                </button>
+            </Link>
+        </div>
+      </div>
     </div>
   );
 }
