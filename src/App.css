@@ -1,4 +1,4 @@
-/* GLOBAL STYLES */
+
 .App {
   max-width: 100%;
   margin: 0;
@@ -7,16 +7,15 @@
   box-sizing: border-box;
 }
 
-/* SEARCH PAGE CONTAINER */
+
 .search-page-container {
   display: block; 
   position: relative;
 }
 
-/* RESULTS GRID */
 .results-list {
   display: grid;
-  /* Auto-fit will show as many as possible, minimum 280px wide */
+  
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
   gap: 20px;
   margin-top: 20px;
@@ -24,14 +23,14 @@
   padding-bottom: 50px; 
 }
 
-/* SEARCH FORM */
+
 .search-form {
   background: #f8f9fa;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   margin-bottom: 20px;
-  /* Ensure form stays under the floating box if screen is small */
+  
   max-width: 100%; 
 }
 
@@ -56,14 +55,14 @@
   border-radius: 4px;
 }
 
-/* FLOATING FAVOURITES WIDGET (The "Small Box") */
+
 .favourites-widget {
   position: fixed; 
-  /* CHANGE HERE: Moved down from 100px to 320px to clear the form */
+ 
   top: 320px;      
   right: 20px;     
   width: 260px;    
-  max-height: 50vh; /* Shorter height so it fits nicely */
+  max-height: 50vh; 
   overflow-y: auto;
   
   background-color: white;
@@ -74,7 +73,6 @@
   z-index: 100;    
 }
 
-/* Individual Favourite Item */
 .fav-item {
   background: #f1f1f1;
   border-bottom: 1px solid #ddd;
@@ -96,7 +94,6 @@
   font-size: 1.2rem;
 }
 
-/* PROPERTY CARD */
 .property-card {
   background: white;
   border: 1px solid #eee;
@@ -120,7 +117,7 @@
   margin-bottom: 10px;
 }
 
-/* TOAST NOTIFICATION */
+
 .toast-notification {
   position: fixed;
   top: 20px;

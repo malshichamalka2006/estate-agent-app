@@ -5,16 +5,20 @@ import data from '../data/properties.json';
 
 function SearchPage({ favourites, addFavourite, removeFavourite, clearFavourites }) {
   const [properties, setProperties] = useState([]);
+  
+  // === UPDATED FILTERS ===
+  // Changed maxPrice from 1,000,000 to 2,000,000 so Prop 5 shows up.
   const [filters, setFilters] = useState({
     type: 'any',
     minPrice: 0,
-    maxPrice: 1000000,
+    maxPrice: 2000000, 
     minBedrooms: 0,
     maxBedrooms: 10,
     postcode: ''
   });
 
   useEffect(() => {
+    // Load data safely
     if (data && data.properties) {
       setProperties(data.properties);
     }
@@ -27,6 +31,7 @@ function SearchPage({ favourites, addFavourite, removeFavourite, clearFavourites
 
   const filteredProperties = properties.filter(property => {
     // === SAFETY GUARD ===
+    // If a property is broken (missing data), skip it so the app doesn't crash
     if (!property || !property.id) return false;
 
     const typeMatch = filters.type === 'any' || property.type === filters.type;
@@ -50,21 +55,41 @@ function SearchPage({ favourites, addFavourite, removeFavourite, clearFavourites
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="search-page-container">
         <h1>Find Your Dream Home</h1>
+        
+        {/* Search Form */}
         <div className="search-form">
             <div className="search-form-grid">
-                <label>Type <select name="type" onChange={handleFilterChange}><option value="any">Any</option><option value="House">House</option><option value="Flat">Flat</option></select></label>
-                <label>Postcode <input type="text" name="postcode" placeholder="e.g. BR1" onChange={handleFilterChange}/></label>
-                <label>Min Price <input type="number" name="minPrice" value={filters.minPrice} onChange={handleFilterChange}/></label>
-                <label>Max Price <input type="number" name="maxPrice" value={filters.maxPrice} onChange={handleFilterChange}/></label>
-                <label>Min Beds <input type="number" name="minBedrooms" value={filters.minBedrooms} onChange={handleFilterChange}/></label>
-                <label>Max Beds <input type="number" name="maxBedrooms" value={filters.maxBedrooms} onChange={handleFilterChange}/></label>
+                <label>Type 
+                    <select name="type" onChange={handleFilterChange}>
+                        <option value="any">Any</option>
+                        <option value="House">House</option>
+                        <option value="Flat">Flat</option>
+                    </select>
+                </label>
+                <label>Postcode 
+                    <input type="text" name="postcode" placeholder="e.g. BR1" onChange={handleFilterChange}/>
+                </label>
+                <label>Min Price 
+                    <input type="number" name="minPrice" value={filters.minPrice} onChange={handleFilterChange}/>
+                </label>
+                <label>Max Price 
+                    <input type="number" name="maxPrice" value={filters.maxPrice} onChange={handleFilterChange}/>
+                </label>
+                <label>Min Beds 
+                    <input type="number" name="minBedrooms" value={filters.minBedrooms} onChange={handleFilterChange}/>
+                </label>
+                <label>Max Beds 
+                    <input type="number" name="maxBedrooms" value={filters.maxBedrooms} onChange={handleFilterChange}/>
+                </label>
             </div>
         </div>
 
+        {/* Property Results List */}
         <Droppable droppableId="property-list" isDropDisabled={true}>
             {(provided) => (
                 <div className="results-list" {...provided.droppableProps} ref={provided.innerRef}>
                     {filteredProperties.length === 0 && <p>No properties match your search...</p>}
+                    
                     {filteredProperties.map((property, index) => (
                         <Draggable key={property.id} draggableId={property.id} index={index}>
                             {(provided) => (
@@ -79,6 +104,7 @@ function SearchPage({ favourites, addFavourite, removeFavourite, clearFavourites
             )}
         </Droppable>
 
+        {/* Favourites Widget */}
         <div className="favourites-widget">
             <h3 style={{marginTop: 0, fontSize: '1.1rem', color: '#28a745'}}>Favourites Zone</h3>
             <Droppable droppableId="favourites-zone">
